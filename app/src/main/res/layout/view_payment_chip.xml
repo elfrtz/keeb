@@ -33,20 +33,28 @@
             android:textSize="18sp"
             android:layout_marginEnd="6dp" />
 
-        <!-- Amount input -->
+        <!-- Amount input — Keeb keys type here when focused (no system keyboard) -->
         <EditText
             android:id="@+id/et_amount"
-            android:layout_width="48dp"
+            android:layout_width="80dp"
             android:layout_height="36dp"
-            android:inputType="numberDecimal"
+            android:inputType="numberDecimal|textNoSuggestions"
+            android:imeOptions="flagNoExtractUi|flagNoFullscreen"
             android:text="5"
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:background="@android:color/transparent"
-            android:paddingStart="0dp"
-            android:paddingEnd="0dp" />
+            android:background="@drawable/bg_amount_field"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:cursorVisible="true"
+            android:selectAllOnFocus="true"
+            android:importantForAutofill="no"
+            android:hint="0" />
 
         <!-- USDC label -->
         <TextView

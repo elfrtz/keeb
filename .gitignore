@@ -8,3 +8,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+.keeb_wallet_prefs.xml

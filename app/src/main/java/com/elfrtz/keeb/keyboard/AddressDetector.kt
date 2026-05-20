@@ -7,10 +7,22 @@ import java.util.regex.Pattern
  */
 object AddressDetector {
     private val ETH_PATTERN = Pattern.compile("0x[a-fA-F0-9]{40}")
+    private val HEX_ONLY_PATTERN = Pattern.compile("(?i)(?<![a-f0-9])[a-f0-9]{40}(?![a-f0-9])")
 
     /** Returns the first Ethereum address found in [text], or null. */
     fun detect(text: CharSequence): String? {
-        val m = ETH_PATTERN.matcher(text)
-        return if (m.find()) m.group() else null
+        val raw = text.toString().trim()
+        if (raw.isEmpty()) return null
+
+        ETH_PATTERN.matcher(raw).let { m ->
+            if (m.find()) return m.group()
+        }
+
+        // Some apps copy without 0x prefix
+        HEX_ONLY_PATTERN.matcher(raw).let { m ->
+            if (m.find()) return "0x" + m.group().lowercase()
+        }
+
+        return null
     }
 }

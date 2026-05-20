@@ -56,6 +56,9 @@ object KeyboardView {
     // Whether the symbol page is currently shown
     private var showingSymbols = false
 
+    // Numeric layout forced while editing USDC amount
+    private var amountMode = false
+
     // Reference to the shift key so we can update its label/color
     private var shiftKey: MaterialButton? = null
 
@@ -96,6 +99,34 @@ object KeyboardView {
      * Update the shift key's visual appearance to match current state.
      * Call this whenever ShiftState changes.
      */
+    /** Show number/symbol keys while the user edits the USDC amount. */
+    fun enterAmountMode(
+        ctx: Context,
+        service: KeebInputMethodService,
+        container: LinearLayout,
+        onKey: (String) -> Unit
+    ) {
+        if (amountMode && showingSymbols) return
+        amountMode = true
+        showingSymbols = true
+        buildSymbolLayout(ctx, service, container, onKey)
+        symbolToggleKey?.text = "ABC"
+    }
+
+    /** Return to letter keys after amount editing. */
+    fun exitAmountMode(
+        ctx: Context,
+        service: KeebInputMethodService,
+        container: LinearLayout,
+        onKey: (String) -> Unit
+    ) {
+        if (!amountMode) return
+        amountMode = false
+        showingSymbols = false
+        buildLetterLayout(ctx, service, container, onKey)
+        refreshShiftKey(ctx, service.stateManager)
+    }
+
     fun refreshShiftKey(ctx: Context, state: KeyboardStateManager) {
         shiftKey?.let { key ->
             key.text = state.shiftKeyLabel
@@ -220,6 +251,7 @@ object KeyboardView {
         container: LinearLayout,
         onKey: (String) -> Unit
     ) {
+        amountMode = false
         showingSymbols = !showingSymbols
         if (showingSymbols) {
             buildSymbolLayout(ctx, service, container, onKey)

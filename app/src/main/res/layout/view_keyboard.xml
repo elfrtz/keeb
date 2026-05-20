@@ -65,6 +65,28 @@
 
         </LinearLayout>
 
+        <!-- Detect copied wallet address (tap after copy — required on some phones) -->
+        <LinearLayout
+            android:id="@+id/btn_detect_address"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:minWidth="52dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/bg_utility_btn"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginEnd="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/keyboard_detect_pay"
+                android:textSize="11sp"
+                android:textColor="@color/blue_primary"
+                android:textStyle="bold" />
+        </LinearLayout>
+
         <!-- Settings pill -->
         <LinearLayout
             android:id="@+id/btn_settings"

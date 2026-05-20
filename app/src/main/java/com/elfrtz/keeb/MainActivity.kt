@@ -64,10 +64,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateWalletStatus() {
         val tv = findViewById<TextView>(R.id.tv_wallet_status)
         tv.text = when (WalletManager.connectionState) {
-            WalletManager.ConnectionState.CONNECTED ->
-                "🟢 ${WalletManager.shortAddress}"
             WalletManager.ConnectionState.DEMO ->
-                "🟡 Demo wallet: ${WalletManager.shortAddress}"
+                "🟢 Wallet: ${WalletManager.shortAddress}"
             WalletManager.ConnectionState.DISCONNECTED ->
                 "⚪ No wallet connected"
         }

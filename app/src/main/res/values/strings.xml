@@ -4,6 +4,10 @@
 
     <!-- Keyboard actions -->
     <string name="send_label">Send</string>
+    <string name="keyboard_detect_pay">Pay</string>
+    <string name="keyboard_no_address_in_clipboard">No wallet address in clipboard. Copy a 0x… address, then tap Pay.</string>
+    <string name="keyboard_amount_paste_invalid">Clipboard has no number to paste</string>
+    <string name="keyboard_amount_hint">Tap amount — type with keys below. Long-press to paste.</string>
     <string name="payment_success">✅ Sent %1$s USDC on Base</string>
     <string name="sending">Sending…</string>
     <string name="send_failed">Transaction failed</string>
@@ -20,10 +24,23 @@
 
     <!-- Wallet -->
     <string name="wallet_title">Wallet</string>
-    <string name="wallet_connect_metamask">Connect MetaMask</string>
-    <string name="wallet_disconnect">Disconnect</string>
-    <string name="wallet_not_connected">No wallet connected</string>
-    <string name="wallet_demo">Demo wallet active</string>
-    <string name="wallet_connected">MetaMask connected</string>
+    <string name="wallet_setup_button">Set up sending wallet</string>
+    <string name="wallet_change_key">Change wallet key</string>
+    <string name="wallet_open_metamask">Open MetaMask (export key)</string>
+    <string name="wallet_disconnect">Disconnect wallet</string>
+    <string name="wallet_disconnected">Wallet removed from Keeb</string>
+    <string name="wallet_metamask_not_installed">MetaMask is not installed</string>
+    <string name="wallet_setup_title">Link your Base Sepolia wallet</string>
+    <string name="wallet_setup_message">Keeb cannot auto-connect to MetaMask from the keyboard.\n\n1. In MetaMask, switch to Base Sepolia Testnet\n2. Account → ⋮ → Account details → Show private key\n3. Paste that key below (test wallet only)\n\nThe key stays on your phone and is used to sign USDC sends.</string>
+    <string name="wallet_private_key_hint">Private key (with or without 0x)</string>
+    <string name="wallet_save_key">Save &amp; enable sends</string>
+    <string name="wallet_key_empty">Enter a private key</string>
+    <string name="wallet_setup_success">Wallet ready — you can send USDC from the keyboard</string>
+    <string name="wallet_state_ready">Ready to send</string>
+    <string name="wallet_state_not_ready">Not set up</string>
+    <string name="wallet_no_address">No wallet configured</string>
+    <string name="wallet_hint_setup">Paste the private key from your MetaMask account on Base Sepolia. Use a test wallet only — never your mainnet funds.</string>
+    <string name="wallet_hint_ready">USDC sends use this wallet on Base Sepolia. Switch network in MetaMask if balances do not match.</string>
+    <string name="wallet_footer">Keeb sends USDC on Base Sepolia from any chat app. Requires a test private key on this device.</string>
     <string name="wallet_network">Base Sepolia</string>
 </resources>

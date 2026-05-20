@@ -34,8 +34,9 @@ object TransactionService {
     ) {
         Thread {
             try {
-                val web3 = WalletManager.web3
                 val creds = WalletManager.credentials
+                    ?: throw IllegalStateException("No wallet configured")
+                val web3 = WalletManager.web3
 
                 // Convert human amount to USDC units (6 decimals)
                 val amount = BigDecimal(amountStr)

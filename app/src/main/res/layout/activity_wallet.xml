@@ -121,15 +121,36 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <!-- Connect button -->
+    <TextView
+        android:id="@+id/tv_wallet_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/wallet_hint_setup"
+        android:textSize="13sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginBottom="20dp"
+        android:lineSpacingExtra="4dp" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_connect_metamask"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:text="🦊  Connect MetaMask"
+        android:text="@string/wallet_setup_button"
         android:textSize="15sp"
         android:backgroundTint="@color/blue_primary"
         android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_open_metamask"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/wallet_open_metamask"
+        android:textSize="15sp"
+        android:textColor="@color/text_primary"
         android:layout_marginBottom="10dp"
         android:insetTop="0dp"
         android:insetBottom="0dp" />
@@ -150,12 +171,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Keeb sends USDC on Base Sepolia directly\nfrom any chat app — no switching apps."
+        android:text="@string/wallet_footer"
         android:textSize="12sp"
         android:textColor="@color/text_muted"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp" />
 
