@@ -1,0 +1,15 @@
+<resources>
+    <color name="keyboard_bg">#0D0D0D</color>
+    <color name="key_bg">#1A1A2E</color>
+    <color name="key_text">#E0E0E0</color>
+    <color name="key_pressed">#2A2A4A</color>
+    <color name="accent">#00F0FF</color>
+    <color name="accent_dim">#8000F0FF</color>
+    <color name="chip_bg">#CC1A1A2E</color>
+    <color name="chip_border">#4000F0FF</color>
+    <color name="send_btn_bg">#00C896</color>
+    <color name="send_btn_text">#FFFFFF</color>
+    <color name="dismiss_tint">#80FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>

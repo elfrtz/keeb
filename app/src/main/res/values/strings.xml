@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Keeb</string>
+    <string name="keyboard_subtype">English (US)</string>
+    <string name="send_label">Send</string>
+    <string name="payment_success">✅ Sent %1$s USDC on Base</string>
+    <string name="sending">Sending…</string>
+    <string name="send_failed">Transaction failed</string>
+</resources>
