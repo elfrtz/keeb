@@ -10,12 +10,12 @@ import android.content.SharedPreferences
 class KeyboardSettings(context: Context) {
 
     enum class KeyHeight(val dp: Int, val label: String) {
-        SMALL(44, "Small"),
-        MEDIUM(52, "Medium"),
-        LARGE(62, "Large");
+        SMALL(52, "Small"),
+        MEDIUM(62, "Medium"),
+        LARGE(72, "Large");
 
         companion object {
-            fun fromName(name: String) = entries.firstOrNull { it.name == name } ?: MEDIUM
+            fun fromName(name: String) = entries.firstOrNull { it.name == name } ?: LARGE
         }
     }
 

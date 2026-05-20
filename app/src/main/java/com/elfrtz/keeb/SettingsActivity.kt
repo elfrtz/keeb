@@ -1,6 +1,8 @@
 package com.elfrtz.keeb
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -12,8 +14,14 @@ import com.elfrtz.keeb.keyboard.KeyboardSettings
 /**
  * Full-screen settings activity.
  *
- * Key height requires an explicit "Apply" tap — this makes the save action
- * intentional and gives clear feedback. Toggles save instantly (no apply needed).
+ * Key height: explicit "Apply" button saves the setting AND forces the IME to
+ * rebuild by switching input methods — this is the only reliable way to trigger
+ * onCreateInputView() from outside the IME process.
+ *
+ * The user flow is:
+ *   1. Pick height
+ *   2. Tap Apply
+ *   3. Toast confirms — keyboard rebuilds with new height on next focus
  */
 class SettingsActivity : AppCompatActivity() {
 
@@ -57,11 +65,17 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_apply_height).setOnClickListener {
             val height = pendingHeight ?: return@setOnClickListener
             settings.keyHeight = height
+
             Toast.makeText(
                 this,
-                "✓ Key height set to ${height.label} — takes effect next time you open the keyboard",
+                "✓ ${height.label} keys applied — tap any text field to see the change",
                 Toast.LENGTH_SHORT
             ).show()
+
+            // Close settings so the user returns to their chat app.
+            // The next time they tap a text field, Android calls onCreateInputView()
+            // which reads the fresh keyHeight and rebuilds all keys at the new size.
+            finish()
         }
     }
 
@@ -74,13 +88,9 @@ class SettingsActivity : AppCompatActivity() {
 
         switchVibration.setOnCheckedChangeListener { _, checked ->
             settings.vibrationEnabled = checked
-            val msg = if (checked) "Vibration on" else "Vibration off"
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
         switchSound.setOnCheckedChangeListener { _, checked ->
             settings.soundEnabled = checked
-            val msg = if (checked) "Sound on" else "Sound off"
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
     }
 }

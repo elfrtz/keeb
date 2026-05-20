@@ -190,9 +190,9 @@ class KeebInputMethodService : InputMethodService() {
             WalletManager.ConnectionState.CONNECTED ->
                 "🟢" to (WalletManager.shortAddress ?: "Connected")
             WalletManager.ConnectionState.DEMO ->
-                "🟡" to "Demo: ${WalletManager.shortAddress ?: ""}"
+                "🟡" to (WalletManager.shortAddress ?: "Demo")
             WalletManager.ConnectionState.DISCONNECTED ->
-                "⚪" to "Connect Wallet"
+                "⚪" to "Wallet"
         }
         tvWalletDot?.text   = dot
         tvWalletLabel?.text = label

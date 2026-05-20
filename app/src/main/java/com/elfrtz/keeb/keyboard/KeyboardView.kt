@@ -125,18 +125,23 @@ object KeyboardView {
         shiftKey = null
         symbolToggleKey = null
 
-        val keyHeightDp = service.settings.keyHeight.dp
+        val h = service.settings.keyHeight.dp
+        // Row bottom margin scales with key height so spacing feels proportional
+        val rowGap = when {
+            h >= 70 -> 7
+            h >= 60 -> 6
+            else    -> 5
+        }
 
         // Rows 0–2: QWERTY letter rows
         for ((index, chars) in LETTER_ROWS.withIndex()) {
-            val row = makeRow(ctx)
+            val row = makeRow(ctx, rowGap)
 
             when (index) {
                 0 -> { /* no indent */ }
-                1 -> addSpacer(row, 20)
+                1 -> addSpacer(row, 22)
                 2 -> {
-                    // Shift key on the left of row 2
-                    val shift = makeShiftKey(ctx, service, keyHeightDp)
+                    val shift = makeShiftKey(ctx, service, h)
                     shiftKey = shift
                     row.addView(shift)
                     addSpacer(row, 4)
@@ -144,34 +149,33 @@ object KeyboardView {
             }
 
             for (ch in chars) {
-                val displayLabel = if (service.stateManager.isUpperCase) ch.uppercaseChar().toString()
-                                   else ch.lowercaseChar().toString()
-                row.addView(makeLetterKey(ctx, ch.toString(), displayLabel, onKey, keyHeightDp))
+                val label = if (service.stateManager.isUpperCase) ch.uppercaseChar().toString()
+                            else ch.lowercaseChar().toString()
+                row.addView(makeLetterKey(ctx, ch.toString(), label, onKey, h, rowGap))
             }
 
             when (index) {
-                1 -> addSpacer(row, 20)
+                1 -> addSpacer(row, 22)
                 2 -> {
                     addSpacer(row, 4)
-                    // Backspace on the right of row 2
-                    row.addView(makeDeleteKey(ctx, service, keyHeightDp))
+                    row.addView(makeDeleteKey(ctx, service, h, rowGap))
                 }
             }
 
             container.addView(row)
         }
 
-        // Row 3: bottom action row
-        val bottom = makeRow(ctx)
-        val symToggle = makeActionKey(ctx, "?123", 1.5f, keyHeightDp) {
+        // Bottom row
+        val bottom = makeRow(ctx, rowGap)
+        val symToggle = makeActionKey(ctx, "?123", 1.5f, h, rowGap) {
             toggleSymbols(ctx, service, container, onKey)
         }
         symbolToggleKey = symToggle
         bottom.addView(symToggle)
-        bottom.addView(makeLetterKey(ctx, ",", ",", onKey, keyHeightDp, weight = 0.8f))
-        bottom.addView(makeSpaceKey(ctx, onKey, keyHeightDp))
-        bottom.addView(makeLetterKey(ctx, ".", ".", onKey, keyHeightDp, weight = 0.8f))
-        bottom.addView(makeEnterKey(ctx, service, keyHeightDp))
+        bottom.addView(makeLetterKey(ctx, ",", ",", onKey, h, rowGap, weight = 0.8f))
+        bottom.addView(makeSpaceKey(ctx, onKey, h, rowGap))
+        bottom.addView(makeLetterKey(ctx, ".", ".", onKey, h, rowGap, weight = 0.8f))
+        bottom.addView(makeEnterKey(ctx, service, h, rowGap))
         container.addView(bottom)
     }
 
@@ -184,25 +188,29 @@ object KeyboardView {
         container.removeAllViews()
         shiftKey = null
 
-        val keyHeightDp = service.settings.keyHeight.dp
+        val h = service.settings.keyHeight.dp
+        val rowGap = when {
+            h >= 70 -> 7
+            h >= 60 -> 6
+            else    -> 5
+        }
 
         for (chars in SYMBOL_ROWS) {
-            val row = makeRow(ctx)
+            val row = makeRow(ctx, rowGap)
             for (ch in chars) {
-                row.addView(makeLetterKey(ctx, ch.toString(), ch.toString(), onKey, keyHeightDp))
+                row.addView(makeLetterKey(ctx, ch.toString(), ch.toString(), onKey, h, rowGap))
             }
             container.addView(row)
         }
 
-        // Bottom row for symbols
-        val bottom = makeRow(ctx)
-        val abcToggle = makeActionKey(ctx, "ABC", 1.5f, keyHeightDp) {
+        val bottom = makeRow(ctx, rowGap)
+        val abcToggle = makeActionKey(ctx, "ABC", 1.5f, h, rowGap) {
             toggleSymbols(ctx, service, container, onKey)
         }
         symbolToggleKey = abcToggle
         bottom.addView(abcToggle)
-        bottom.addView(makeLetterKey(ctx, " ", "space", onKey, keyHeightDp, weight = 4f, isSpace = true))
-        bottom.addView(makeDeleteKey(ctx, service, keyHeightDp, weight = 1.5f))
+        bottom.addView(makeLetterKey(ctx, " ", "space", onKey, h, rowGap, weight = 4f, isSpace = true))
+        bottom.addView(makeDeleteKey(ctx, service, h, rowGap, weight = 1.5f))
         container.addView(bottom)
     }
 
@@ -249,6 +257,7 @@ object KeyboardView {
         displayLabel: String,
         onKey: (String) -> Unit,
         heightDp: Int,
+        rowGap: Int,
         weight: Float = 1f,
         isSpace: Boolean = false
     ): MaterialButton {
@@ -256,7 +265,7 @@ object KeyboardView {
             ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
         ).apply {
             text = displayLabel
-            tag = charValue  // used by updateLetterLabels
+            tag = charValue
             setTextSize(TypedValue.COMPLEX_UNIT_SP, if (isSpace) 12f else 15f)
             setTextColor(ctx.getColor(R.color.key_text))
             typeface = Typeface.DEFAULT
@@ -267,11 +276,11 @@ object KeyboardView {
             minWidth = 0; minHeight = 0
             setPadding(0, 0, 0, 0)
             isAllCaps = false
-            elevation = 3f
+            elevation = 2f
             layoutParams = LinearLayout.LayoutParams(0, dpToPx(ctx, heightDp), weight).apply {
-                marginStart = 3; marginEnd = 3; bottomMargin = 5
+                marginStart = 3; marginEnd = 3; bottomMargin = dpToPx(ctx, rowGap)
             }
-            setOnTouchListener { v, event ->
+            setOnTouchListener { _, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         backgroundTintList = ColorStateList.valueOf(ctx.getColor(R.color.key_pressed_feedback))
@@ -291,7 +300,6 @@ object KeyboardView {
         }
     }
 
-    /** The shift key — tap cycles LOWER↔SHIFT_ONCE, long-press toggles CAPS_LOCK. */
     @SuppressLint("ClickableViewAccessibility")
     private fun makeShiftKey(
         ctx: Context,
@@ -315,9 +323,9 @@ object KeyboardView {
             minWidth = 0; minHeight = 0
             setPadding(0, 0, 0, 0)
             isAllCaps = false
-            elevation = 3f
-            layoutParams = LinearLayout.LayoutParams(0, dpToPx(ctx, heightDp), 1.4f).apply {
-                marginStart = 3; marginEnd = 3; bottomMargin = 5
+            elevation = 2f
+            layoutParams = LinearLayout.LayoutParams(0, dpToPx(ctx, heightDp), 1.5f).apply {
+                marginStart = 3; marginEnd = 3; bottomMargin = dpToPx(ctx, 6)
             }
             setOnClickListener {
                 performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
@@ -331,13 +339,13 @@ object KeyboardView {
         }
     }
 
-    /** The delete key — tap deletes one char, long-press repeats. */
     @SuppressLint("ClickableViewAccessibility")
     private fun makeDeleteKey(
         ctx: Context,
         service: KeebInputMethodService,
         heightDp: Int,
-        weight: Float = 1.4f
+        rowGap: Int,
+        weight: Float = 1.5f
     ): MaterialButton {
         return MaterialButton(
             ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
@@ -352,9 +360,9 @@ object KeyboardView {
             minWidth = 0; minHeight = 0
             setPadding(0, 0, 0, 0)
             isAllCaps = false
-            elevation = 3f
+            elevation = 2f
             layoutParams = LinearLayout.LayoutParams(0, dpToPx(ctx, heightDp), weight).apply {
-                marginStart = 3; marginEnd = 3; bottomMargin = 5
+                marginStart = 3; marginEnd = 3; bottomMargin = dpToPx(ctx, rowGap)
             }
             setOnTouchListener { _, event ->
                 when (event.action) {
@@ -367,17 +375,17 @@ object KeyboardView {
                         backgroundTintList = ColorStateList.valueOf(ctx.getColor(R.color.key_pressed))
                     }
                 }
-                true  // consume — we handle click via repeater
+                true
             }
         }
     }
 
-    /** The spacebar. */
     @SuppressLint("ClickableViewAccessibility")
     private fun makeSpaceKey(
         ctx: Context,
         onKey: (String) -> Unit,
-        heightDp: Int
+        heightDp: Int,
+        rowGap: Int
     ): MaterialButton {
         return MaterialButton(
             ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
@@ -392,9 +400,9 @@ object KeyboardView {
             minWidth = 0; minHeight = 0
             setPadding(0, 0, 0, 0)
             isAllCaps = false
-            elevation = 3f
+            elevation = 2f
             layoutParams = LinearLayout.LayoutParams(0, dpToPx(ctx, heightDp), 4f).apply {
-                marginStart = 3; marginEnd = 3; bottomMargin = 5
+                marginStart = 3; marginEnd = 3; bottomMargin = dpToPx(ctx, rowGap)
             }
             setOnTouchListener { _, event ->
                 when (event.action) {
@@ -412,12 +420,12 @@ object KeyboardView {
         }
     }
 
-    /** The enter/return key. */
     @SuppressLint("ClickableViewAccessibility")
     private fun makeEnterKey(
         ctx: Context,
         service: KeebInputMethodService,
-        heightDp: Int
+        heightDp: Int,
+        rowGap: Int
     ): MaterialButton {
         return MaterialButton(
             ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
@@ -432,9 +440,9 @@ object KeyboardView {
             minWidth = 0; minHeight = 0
             setPadding(0, 0, 0, 0)
             isAllCaps = false
-            elevation = 3f
+            elevation = 2f
             layoutParams = LinearLayout.LayoutParams(0, dpToPx(ctx, heightDp), 1.5f).apply {
-                marginStart = 3; marginEnd = 3; bottomMargin = 5
+                marginStart = 3; marginEnd = 3; bottomMargin = dpToPx(ctx, rowGap)
             }
             setOnTouchListener { _, event ->
                 when (event.action) {
@@ -452,13 +460,13 @@ object KeyboardView {
         }
     }
 
-    /** A generic action key (symbol toggle, etc.). */
     @SuppressLint("ClickableViewAccessibility")
     private fun makeActionKey(
         ctx: Context,
         label: String,
         weight: Float,
         heightDp: Int,
+        rowGap: Int,
         onClick: () -> Unit
     ): MaterialButton {
         return MaterialButton(
@@ -474,9 +482,9 @@ object KeyboardView {
             minWidth = 0; minHeight = 0
             setPadding(0, 0, 0, 0)
             isAllCaps = false
-            elevation = 3f
+            elevation = 2f
             layoutParams = LinearLayout.LayoutParams(0, dpToPx(ctx, heightDp), weight).apply {
-                marginStart = 3; marginEnd = 3; bottomMargin = 5
+                marginStart = 3; marginEnd = 3; bottomMargin = dpToPx(ctx, rowGap)
             }
             setOnTouchListener { _, event ->
                 when (event.action) {
@@ -496,7 +504,7 @@ object KeyboardView {
 
     // ── Helpers ────────────────────────────────────────────────
 
-    private fun makeRow(ctx: Context): LinearLayout {
+    private fun makeRow(ctx: Context, rowGap: Int = 6): LinearLayout {
         return LinearLayout(ctx).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
