@@ -1,86 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/chip_root"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/chip_background"
-    android:gravity="center_vertical"
-    android:paddingStart="14dp"
-    android:paddingEnd="8dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     android:layout_marginTop="6dp"
     android:layout_marginBottom="4dp">
 
-    <!-- USDC icon placeholder -->
-    <TextView
-        android:layout_width="wrap_content"
+    <!--
+        IDLE / SENDING / SUCCESS / FAILED states — main interaction row.
+        Shown in all states except WALLET_REQUIRED.
+    -->
+    <LinearLayout
+        android:id="@+id/chip_main_row"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="💲"
-        android:textSize="20sp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp">
 
-    <!-- Amount input -->
-    <EditText
-        android:id="@+id/et_amount"
-        android:layout_width="56dp"
-        android:layout_height="40dp"
-        android:inputType="numberDecimal"
-        android:text="5"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        <!-- USDC coin icon -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="💵"
+            android:textSize="18sp"
+            android:layout_marginEnd="6dp" />
+
+        <!-- Amount input -->
+        <EditText
+            android:id="@+id/et_amount"
+            android:layout_width="48dp"
+            android:layout_height="36dp"
+            android:inputType="numberDecimal"
+            android:text="5"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp" />
+
+        <!-- USDC label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="USDC"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="6dp" />
+
+        <!-- Arrow -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="→"
+            android:textColor="@color/text_muted"
+            android:textSize="13sp"
+            android:layout_marginEnd="6dp" />
+
+        <!-- Recipient address -->
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_primary"
+            android:textSize="12sp"
+            android:singleLine="true"
+            android:ellipsize="middle"
+            android:fontFamily="monospace" />
+
+        <!-- Send / state button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_send"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="68dp"
+            android:layout_height="34dp"
+            android:text="Send"
+            android:textSize="12sp"
+            android:backgroundTint="@color/blue_primary"
+            android:textColor="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:layout_marginStart="8dp" />
+
+        <!-- Dismiss X -->
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@color/dismiss_tint"
+            android:layout_marginStart="2dp"
+            android:contentDescription="Dismiss" />
+
+    </LinearLayout>
+
+    <!--
+        WALLET_REQUIRED state — shown instead of main row when no wallet connected.
+        Visibility toggled programmatically.
+    -->
+    <LinearLayout
+        android:id="@+id/chip_wallet_required_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🦊"
+            android:textSize="18sp"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Connect wallet to send USDC"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_connect_from_chip"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:text="Connect"
+            android:textSize="12sp"
+            android:backgroundTint="@color/blue_primary"
+            android:textColor="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:layout_marginStart="8dp" />
+
+        <ImageButton
+            android:id="@+id/btn_close_wallet_required"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@color/dismiss_tint"
+            android:layout_marginStart="2dp"
+            android:contentDescription="Dismiss" />
+
+    </LinearLayout>
+
+    <!-- Status strip — shown during Sending / Success / Failed -->
+    <TextView
+        android:id="@+id/tv_chip_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="11sp"
+        android:textColor="@color/text_secondary"
         android:gravity="center"
-        android:background="@android:color/transparent"
-        android:layout_marginStart="4dp" />
-
-    <!-- Label -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="USDC →"
-        android:textColor="@color/accent_dim"
-        android:textSize="13sp"
-        android:layout_marginStart="2dp" />
-
-    <!-- Shortened address -->
-    <TextView
-        android:id="@+id/tv_address"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:textColor="@color/accent"
-        android:textSize="13sp"
-        android:singleLine="true"
-        android:ellipsize="middle"
-        android:layout_marginStart="4dp" />
-
-    <!-- Send button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_send"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:text="@string/send_label"
-        android:textSize="12sp"
-        android:backgroundTint="@color/send_btn_bg"
-        android:textColor="@color/send_btn_text"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:minWidth="64dp"
-        android:layout_marginStart="8dp" />
-
-    <!-- Dismiss -->
-    <ImageButton
-        android:id="@+id/btn_close"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:tint="@color/dismiss_tint"
-        android:layout_marginStart="4dp"
-        android:contentDescription="Dismiss" />
+        android:paddingBottom="9dp"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:visibility="gone" />
 
 </LinearLayout>

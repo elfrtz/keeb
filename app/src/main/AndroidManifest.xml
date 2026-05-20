@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="false"
@@ -9,6 +11,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Keeb">
 
+        <!-- Launcher / onboarding screen -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Keeb">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Wallet connection screen -->
+        <activity
+            android:name=".WalletActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Keeb"
+            android:label="Wallet" />
+
+        <!-- Keyboard settings screen -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Keeb"
+            android:label="Keyboard Settings" />
+
+        <!-- IME service -->
         <service
             android:name=".keyboard.KeebInputMethodService"
             android:label="@string/app_name"

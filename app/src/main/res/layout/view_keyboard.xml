@@ -6,22 +6,92 @@
     android:layout_height="wrap_content"
     android:background="@color/keyboard_bg">
 
-    <!-- Payment chip inserted here dynamically -->
+    <!-- Payment chip — hidden until an address is detected -->
     <FrameLayout
         android:id="@+id/chip_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
-    <!-- Key rows generated at runtime -->
+    <!--
+        Utility bar — wallet status pill + settings button.
+        40dp height gives comfortable tap targets.
+    -->
+    <LinearLayout
+        android:id="@+id/utility_bar"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@color/keyboard_bg">
+
+        <!-- Wallet pill — expands to fill available space -->
+        <LinearLayout
+            android:id="@+id/btn_wallet"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_utility_btn"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:id="@+id/tv_wallet_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚪"
+                android:textSize="9sp"
+                android:layout_marginEnd="5dp" />
+
+            <TextView
+                android:id="@+id/tv_wallet_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Connect Wallet"
+                android:textSize="11sp"
+                android:textColor="@color/text_secondary"
+                android:singleLine="true"
+                android:ellipsize="end" />
+
+        </LinearLayout>
+
+        <!-- Settings button — fixed width pill -->
+        <LinearLayout
+            android:id="@+id/btn_settings"
+            android:layout_width="44dp"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/bg_utility_btn">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚙"
+                android:textSize="15sp"
+                android:textColor="@color/text_secondary" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Key rows — populated programmatically by KeyboardView -->
     <LinearLayout
         android:id="@+id/key_rows_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:paddingTop="6dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingTop="4dp"
         android:paddingBottom="8dp" />
 
 </LinearLayout>

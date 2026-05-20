@@ -1,8 +1,29 @@
 <resources>
     <string name="app_name">Keeb</string>
     <string name="keyboard_subtype">English (US)</string>
+
+    <!-- Keyboard actions -->
     <string name="send_label">Send</string>
     <string name="payment_success">✅ Sent %1$s USDC on Base</string>
     <string name="sending">Sending…</string>
     <string name="send_failed">Transaction failed</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Keyboard Settings</string>
+    <string name="settings_height_label">Key Height</string>
+    <string name="settings_height_small">Small</string>
+    <string name="settings_height_medium">Medium</string>
+    <string name="settings_height_large">Large</string>
+    <string name="settings_vibration">Vibration</string>
+    <string name="settings_sound">Sound</string>
+    <string name="settings_close">Done</string>
+
+    <!-- Wallet -->
+    <string name="wallet_title">Wallet</string>
+    <string name="wallet_connect_metamask">Connect MetaMask</string>
+    <string name="wallet_disconnect">Disconnect</string>
+    <string name="wallet_not_connected">No wallet connected</string>
+    <string name="wallet_demo">Demo wallet active</string>
+    <string name="wallet_connected">MetaMask connected</string>
+    <string name="wallet_network">Base Sepolia</string>
 </resources>

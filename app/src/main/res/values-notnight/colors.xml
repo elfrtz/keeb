@@ -1,0 +1,19 @@
+<resources>
+    <!-- Light mode — clean slate palette -->
+    <color name="keyboard_bg">#F1F5F9</color>
+    <color name="key_bg">#FFFFFF</color>
+    <color name="key_text">#0F172A</color>
+    <color name="key_pressed">#E2E8F0</color>
+    <color name="key_pressed_feedback">#BFDBFE</color>
+    <color name="bg_primary">#F8FAFC</color>
+    <color name="bg_surface">#FFFFFF</color>
+    <color name="bg_elevated">#F1F5F9</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_muted">#94A3B8</color>
+    <color name="chip_bg">#FFFFFFFF</color>
+    <color name="dismiss_tint">#80475569</color>
+    <color name="accent_dim">#802563EB</color>
+    <color name="shift_active_color">#DBEAFE</color>
+    <color name="shift_caps_color">#BFDBFE</color>
+</resources>
