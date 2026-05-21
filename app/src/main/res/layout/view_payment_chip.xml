@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/android"
     android:id="@+id/chip_root"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -20,24 +21,24 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingStart="14dp"
-        android:paddingEnd="10dp"
-        android:paddingTop="11dp"
-        android:paddingBottom="11dp">
+        android:paddingStart="12dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <!-- USDC coin icon -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="💵"
-            android:textSize="18sp"
-            android:layout_marginEnd="6dp" />
+            android:textSize="16sp"
+            android:layout_marginEnd="4dp" />
 
         <!-- Amount input — Keeb keys type here when focused (no system keyboard) -->
         <EditText
             android:id="@+id/et_amount"
-            android:layout_width="80dp"
-            android:layout_height="36dp"
+            android:layout_width="52dp"
+            android:layout_height="32dp"
             android:inputType="numberDecimal|textNoSuggestions"
             android:imeOptions="flagNoExtractUi|flagNoFullscreen"
             android:text="5"
@@ -64,7 +65,7 @@
             android:textColor="@color/text_secondary"
             android:textSize="11sp"
             android:layout_marginStart="2dp"
-            android:layout_marginEnd="6dp" />
+            android:layout_marginEnd="4dp" />
 
         <!-- Arrow -->
         <TextView
@@ -72,8 +73,8 @@
             android:layout_height="wrap_content"
             android:text="→"
             android:textColor="@color/text_muted"
-            android:textSize="13sp"
-            android:layout_marginEnd="6dp" />
+            android:textSize="12sp"
+            android:layout_marginEnd="4dp" />
 
         <!-- Recipient address -->
         <TextView
@@ -82,30 +83,39 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textColor="@color/blue_primary"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:singleLine="true"
             android:ellipsize="middle"
             android:fontFamily="monospace" />
 
-        <!-- Send / state button -->
+        <!-- Send / state button — min width prevents "Sen/d" wrap on narrow screens -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_send"
             style="@style/Widget.Material3.Button"
-            android:layout_width="68dp"
-            android:layout_height="34dp"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:minWidth="76dp"
+            android:minHeight="36dp"
+            android:maxLines="1"
+            android:ellipsize="none"
             android:text="Send"
-            android:textSize="12sp"
+            android:textSize="13sp"
+            android:textAllCaps="false"
             android:backgroundTint="@color/blue_primary"
             android:textColor="@color/white"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:layout_marginStart="8dp" />
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            app:insetTop="0dp"
+            app:insetBottom="0dp"
+            app:insetLeft="0dp"
+            app:insetRight="0dp"
+            android:layout_marginStart="6dp" />
 
         <!-- Dismiss X -->
         <ImageButton
             android:id="@+id/btn_close"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="@color/dismiss_tint"

@@ -386,6 +386,7 @@ class KeebInputMethodService : InputMethodService() {
         etAmount.setText("5")
         chipAmountEdit = etAmount
         setupAmountField(etAmount)
+        configureSendButton(btnSend)
 
         // Determine initial state
         if (!WalletManager.isConnected) {
@@ -491,6 +492,22 @@ class KeebInputMethodService : InputMethodService() {
                     ColorStateList.valueOf(getColor(R.color.blue_primary))
             }
         }
+    }
+
+    private fun configureSendButton(btnSend: MaterialButton) {
+        val minPx = (76 * resources.displayMetrics.density).toInt()
+        btnSend.minWidth = minPx
+        btnSend.minHeight = (36 * resources.displayMetrics.density).toInt()
+        btnSend.insetTop = 0
+        btnSend.insetBottom = 0
+        btnSend.isAllCaps = false
+        btnSend.maxLines = 1
+        btnSend.setPadding(
+            (12 * resources.displayMetrics.density).toInt(),
+            0,
+            (12 * resources.displayMetrics.density).toInt(),
+            0
+        )
     }
 
     private fun buildPaymentSuccessMessage(amount: String, txHash: String?): String {

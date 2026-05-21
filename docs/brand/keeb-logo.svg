@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Keeb app icon: background #0D1117 + ic_launcher_foreground paths -->
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108">
+  <rect width="108" height="108" fill="#0D1117"/>
+  <path fill="#1E293B" d="M24,36h60c3.3,0 6,2.7 6,6v36c0,3.3 -2.7,6 -6,6H24c-3.3,0 -6,-2.7 -6,-6V42c0,-3.3 2.7,-6 6,-6z"/>
+  <path fill="#334155" d="M30,46h8v6h-8zM42,46h8v6h-8zM54,46h8v6h-8zM66,46h8v6h-8z"/>
+  <path fill="#334155" d="M33,56h8v6h-8zM45,56h8v6h-8zM57,56h8v6h-8z"/>
+  <path fill="#3B82F6" d="M36,68h36c2.2,0 4,1.8 4,4v4c0,2.2 -1.8,4 -4,4H36c-2.2,0 -4,-1.8 -4,-4v-4c0,-2.2 1.8,-4 4,-4z"/>
+  <path fill="#10B981" d="M70,28m6,0a6,6 0,1 1,-12 0a6,6 0,1 1,12 0"/>
+  <path fill="#FFFFFF" d="M67,31h6v1.5h-6zM68.25,32.5h3.5v1.5h-3.5z"/>
+</svg>

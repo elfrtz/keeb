@@ -23,12 +23,12 @@
         android:id="@+id/utility_bar"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="34dp"
         android:gravity="center_vertical"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:background="@color/keyboard_bg">
 
         <!-- Wallet status pill — tapping opens WalletActivity for management -->
@@ -113,9 +113,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:paddingTop="3dp"
-        android:paddingBottom="10dp" />
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="6dp" />
 
 </LinearLayout>

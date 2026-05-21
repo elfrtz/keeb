@@ -10,12 +10,12 @@ import android.content.SharedPreferences
 class KeyboardSettings(context: Context) {
 
     enum class KeyHeight(val dp: Int, val label: String) {
-        SMALL(52, "Small"),
-        MEDIUM(62, "Medium"),
-        LARGE(72, "Large");
+        SMALL(40, "Small"),
+        MEDIUM(46, "Medium"),
+        LARGE(52, "Large");
 
         companion object {
-            fun fromName(name: String) = entries.firstOrNull { it.name == name } ?: LARGE
+            fun fromName(name: String) = entries.firstOrNull { it.name == name } ?: MEDIUM
         }
     }
 
@@ -23,7 +23,7 @@ class KeyboardSettings(context: Context) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     var keyHeight: KeyHeight
-        get() = KeyHeight.fromName(prefs.getString(KEY_HEIGHT, KeyHeight.LARGE.name) ?: KeyHeight.LARGE.name)
+        get() = KeyHeight.fromName(prefs.getString(KEY_HEIGHT, KeyHeight.MEDIUM.name) ?: KeyHeight.MEDIUM.name)
         set(value) { prefs.edit().putString(KEY_HEIGHT, value.name).apply() }
 
     var vibrationEnabled: Boolean
@@ -36,7 +36,7 @@ class KeyboardSettings(context: Context) {
 
     fun resetToDefaults() {
         prefs.edit()
-            .putString(KEY_HEIGHT, KeyHeight.LARGE.name)
+            .putString(KEY_HEIGHT, KeyHeight.MEDIUM.name)
             .putBoolean(KEY_VIBRATION, true)
             .putBoolean(KEY_SOUND, false)
             .apply()
