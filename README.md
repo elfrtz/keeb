@@ -54,6 +54,17 @@ cd keeb
 ./gradlew assembleDebug
 ```
 
+### Share APK with your team
+
+Email and chat apps often block `.apk` files. Use GitHub instead:
+
+| Method | Where |
+|--------|--------|
+| **Release** (best link to send) | [github.com/elfrtz/keeb/releases](https://github.com/elfrtz/keeb/releases) — maintainer runs `git tag v0.1.0 && git push origin v0.1.0` or **Actions → Release APK** |
+| **Latest `master` build** | [Actions](https://github.com/elfrtz/keeb/actions) → **Build APK** → Artifacts → `keeb-debug-apk` |
+
+Full install steps: [docs/INSTALL.md](docs/INSTALL.md).
+
 ### Configure Demo Wallet
 
 Edit `app/src/main/java/com/elfrtz/keeb/wallet/BaseConfig.kt`:

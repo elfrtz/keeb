@@ -1,0 +1,71 @@
+# Build debug APK and attach to a GitHub Release (share link with team; avoids email APK blocks).
+name: Release APK
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v0.1.0)"
+        required: true
+        default: "v0.1.0"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve version tag
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+          fi
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "apk_name=keeb-${TAG}-debug.apk" >> "$GITHUB_OUTPUT"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build debug APK
+        run: ./gradlew :app:assembleDebug --no-daemon
+
+      - name: Prepare release asset
+        run: |
+          cp app/build/outputs/apk/debug/app-debug.apk "${{ steps.version.outputs.apk_name }}"
+          ls -la "${{ steps.version.outputs.apk_name }}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: Keeb ${{ steps.version.outputs.tag }}
+          body: |
+            ## Install (internal test build)
+
+            1. Download **`${{ steps.version.outputs.apk_name }}`** below (debug build, not Play Store).
+            2. On Android: allow install from your browser or Files app (unknown sources).
+            3. Open the APK → Install.
+            4. Enable **Keeb** under Settings → System → Languages & input → On-screen keyboard.
+            5. Configure a Base Sepolia test wallet in the app (see [README](https://github.com/elfrtz/keeb#setup)).
+
+            If Play Protect warns about an unknown app, that is expected for sideloaded debug APKs from this repo.
+          files: ${{ steps.version.outputs.apk_name }}
+          draft: false
+          generate_release_notes: true
