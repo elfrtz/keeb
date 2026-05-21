@@ -54,7 +54,7 @@ cd keeb
 ./gradlew assembleDebug
 ```
 
-### Share APK with your team
+### Share APK with users
 
 Email and chat apps often block `.apk` files. Use GitHub instead:
 

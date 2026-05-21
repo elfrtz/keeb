@@ -1,4 +1,4 @@
-# Install Keeb (team / internal testing)
+# Install Keeb (users / internal testing)
 
 Debug APKs are built in GitHub Actions so you can share a **link** instead of emailing `.apk` files (often blocked as unsafe).
 
