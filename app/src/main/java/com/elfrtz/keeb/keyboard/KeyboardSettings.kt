@@ -34,6 +34,14 @@ class KeyboardSettings(context: Context) {
         get() = prefs.getBoolean(KEY_SOUND, false)
         set(value) { prefs.edit().putBoolean(KEY_SOUND, value).apply() }
 
+    fun resetToDefaults() {
+        prefs.edit()
+            .putString(KEY_HEIGHT, KeyHeight.LARGE.name)
+            .putBoolean(KEY_VIBRATION, true)
+            .putBoolean(KEY_SOUND, false)
+            .apply()
+    }
+
     companion object {
         private const val PREFS_NAME = "keeb_settings"
         private const val KEY_HEIGHT = "key_height"

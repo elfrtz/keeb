@@ -11,6 +11,11 @@ object BaseConfig {
     const val USDC_CONTRACT = "0x036CbD53842c5426634e7929541eC2318f3dCF7e"
     const val USDC_DECIMALS = 6
 
+    /** Base Sepolia block explorer — append transaction hash. */
+    const val EXPLORER_TX_BASE = "https://sepolia.basescan.org/tx/"
+
+    fun explorerTxUrl(txHash: String): String = EXPLORER_TX_BASE + txHash
+
     // ⚠️ DEMO ONLY — replace with a funded test wallet private key
     const val DEMO_PRIVATE_KEY = "YOUR_PRIVATE_KEY_HERE"
 }

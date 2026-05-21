@@ -21,6 +21,7 @@ import android.widget.Toast
 import com.elfrtz.keeb.R
 import com.elfrtz.keeb.SettingsActivity
 import com.elfrtz.keeb.WalletActivity
+import com.elfrtz.keeb.wallet.BaseConfig
 import com.elfrtz.keeb.wallet.TransactionService
 import com.elfrtz.keeb.wallet.WalletManager
 import com.google.android.material.button.MaterialButton
@@ -492,6 +493,17 @@ class KeebInputMethodService : InputMethodService() {
         }
     }
 
+    private fun buildPaymentSuccessMessage(amount: String, txHash: String?): String {
+        if (txHash.isNullOrBlank()) {
+            return getString(R.string.payment_success, amount)
+        }
+        return getString(
+            R.string.payment_success_with_tx,
+            amount,
+            BaseConfig.explorerTxUrl(txHash)
+        )
+    }
+
     private fun executeSend(
         address: String,
         amount: String,
@@ -508,9 +520,13 @@ class KeebInputMethodService : InputMethodService() {
                 isSending = false
                 if (success) {
                     currentInputConnection?.commitText(
-                        getString(R.string.payment_success, amount), 1
+                        buildPaymentSuccessMessage(amount, txHash), 1
                     )
-                    tvStatus.text = "✅  Sent $amount USDC — ${txHash?.take(10)}…"
+                    tvStatus.text = if (!txHash.isNullOrBlank()) {
+                        "✅  Sent $amount USDC\n${BaseConfig.explorerTxUrl(txHash)}"
+                    } else {
+                        "✅  Sent $amount USDC"
+                    }
                     tvStatus.setTextColor(getColor(R.color.green_primary))
                     applyChipState(ChipState.SUCCESS, rowMain, rowWallet, btnSend, tvStatus)
                     mainHandler.postDelayed(chipAutoDismissRunnable, 2200)

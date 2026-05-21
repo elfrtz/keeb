@@ -9,3 +9,6 @@
 .cxx
 local.properties
 .keeb_wallet_prefs.xml
+
+# Cursor skills — Python cache from ui-ux-pro-max scripts
+.cursor/**/__pycache__/

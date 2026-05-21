@@ -1,114 +1,82 @@
 package com.elfrtz.keeb
 
 import android.os.Bundle
-import android.text.InputType
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
+import com.elfrtz.keeb.ui.screens.WalletScreen
 import com.elfrtz.keeb.wallet.WalletManager
 
-/**
- * Wallet setup screen.
- *
- * Keeb signs USDC transfers locally with a test private key. MetaMask does not expose
- * a simple connect callback to third-party keyboards — paste the key exported from
- * your MetaMask Base Sepolia account instead.
- */
-class WalletActivity : AppCompatActivity() {
+class WalletActivity : ComponentActivity() {
+
+    private var isReady by mutableStateOf(false)
+    private var address by mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_wallet)
+        enableEdgeToEdge()
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = false
+        }
+        window.statusBarColor = android.graphics.Color.parseColor("#0D1117")
+        window.navigationBarColor = android.graphics.Color.parseColor("#0D1117")
 
         Thread {
             try {
                 WalletManager.init(applicationContext)
             } catch (_: Exception) {
             }
-            runOnUiThread { updateUI() }
+            runOnUiThread { updateState() }
         }.start()
 
-        findViewById<Button>(R.id.btn_wallet_back).setOnClickListener { finish() }
-        findViewById<Button>(R.id.btn_connect_metamask).setOnClickListener {
-            showWalletSetupDialog()
-        }
-        findViewById<Button>(R.id.btn_open_metamask).setOnClickListener {
-            val opened = WalletManager.openMetaMaskApp(this)
-            if (!opened) {
-                Toast.makeText(this, R.string.wallet_metamask_not_installed, Toast.LENGTH_SHORT).show()
-            }
-        }
-        findViewById<Button>(R.id.btn_disconnect_wallet).setOnClickListener {
-            WalletManager.disconnect(this)
-            updateUI()
-            Toast.makeText(this, R.string.wallet_disconnected, Toast.LENGTH_SHORT).show()
+        setContent {
+            WalletScreen(
+                isReady = isReady,
+                address = address,
+                onBack = { finish() },
+                onSaveKey = { key ->
+                    if (key.isBlank()) {
+                        Toast.makeText(this, R.string.wallet_key_empty, Toast.LENGTH_SHORT).show()
+                        return@WalletScreen
+                    }
+                    val error = WalletManager.setDemoPrivateKey(this, key)
+                    if (error != null) {
+                        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this, R.string.wallet_setup_success, Toast.LENGTH_SHORT).show()
+                        updateState()
+                    }
+                },
+                onDisconnect = {
+                    WalletManager.disconnect(this)
+                    updateState()
+                    Toast.makeText(this, R.string.wallet_disconnected, Toast.LENGTH_SHORT).show()
+                },
+                onOpenMetaMask = {
+                    val opened = WalletManager.openMetaMaskApp(this)
+                    if (!opened) {
+                        Toast.makeText(this, R.string.wallet_metamask_not_installed, Toast.LENGTH_SHORT).show()
+                    }
+                },
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if (WalletManager.canSend) updateUI()
+        if (WalletManager.canSend) updateState()
     }
 
-    private fun showWalletSetupDialog() {
-        val input = EditText(this).apply {
-            hint = getString(R.string.wallet_private_key_hint)
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            setPadding(48, 32, 48, 16)
-        }
-
-        AlertDialog.Builder(this)
-            .setTitle(R.string.wallet_setup_title)
-            .setMessage(R.string.wallet_setup_message)
-            .setView(input)
-            .setPositiveButton(R.string.wallet_save_key) { _, _ ->
-                val key = input.text?.toString().orEmpty()
-                if (key.isBlank()) {
-                    Toast.makeText(this, R.string.wallet_key_empty, Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
-                }
-                val error = WalletManager.setDemoPrivateKey(this, key)
-                if (error != null) {
-                    Toast.makeText(this, error, Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this, R.string.wallet_setup_success, Toast.LENGTH_SHORT).show()
-                    updateUI()
-                }
-            }
-            .setNeutralButton(R.string.wallet_open_metamask) { _, _ ->
-                WalletManager.openMetaMaskApp(this)
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
-    }
-
-    private fun updateUI() {
-        val tvState = findViewById<TextView>(R.id.tv_wallet_state)
-        val tvAddress = findViewById<TextView>(R.id.tv_wallet_address)
-        val tvHint = findViewById<TextView>(R.id.tv_wallet_hint)
-        val btnSetup = findViewById<Button>(R.id.btn_connect_metamask)
-        val btnOpenMm = findViewById<Button>(R.id.btn_open_metamask)
-        val btnDisconnect = findViewById<Button>(R.id.btn_disconnect_wallet)
-
-        if (WalletManager.canSend) {
-            tvState.text = getString(R.string.wallet_state_ready)
-            tvState.setTextColor(getColor(R.color.green_primary))
-            tvAddress.text = WalletManager.activeAddress ?: "—"
-            tvHint.text = getString(R.string.wallet_hint_ready)
-            btnSetup.text = getString(R.string.wallet_change_key)
-            btnOpenMm.visibility = android.view.View.GONE
-            btnDisconnect.visibility = android.view.View.VISIBLE
-        } else {
-            tvState.text = getString(R.string.wallet_state_not_ready)
-            tvState.setTextColor(getColor(R.color.dismiss_tint))
-            tvAddress.text = getString(R.string.wallet_no_address)
-            tvHint.text = getString(R.string.wallet_hint_setup)
-            btnSetup.text = getString(R.string.wallet_setup_button)
-            btnOpenMm.visibility = android.view.View.VISIBLE
-            btnDisconnect.visibility = android.view.View.GONE
-        }
+    private fun updateState() {
+        isReady = WalletManager.canSend
+        address = WalletManager.activeAddress
     }
 }

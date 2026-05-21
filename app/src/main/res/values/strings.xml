@@ -9,6 +9,7 @@
     <string name="keyboard_amount_paste_invalid">Clipboard has no number to paste</string>
     <string name="keyboard_amount_hint">Tap amount — type with keys below. Long-press to paste.</string>
     <string name="payment_success">✅ Sent %1$s USDC on Base</string>
+    <string name="payment_success_with_tx">✅ Sent %1$s USDC on Base\nView transaction: %2$s</string>
     <string name="sending">Sending…</string>
     <string name="send_failed">Transaction failed</string>
 
